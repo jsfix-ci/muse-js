@@ -1,4 +1,4 @@
-import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
+import { lastValueFrom, BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
 import { filter, first, map, share, take } from 'rxjs/operators';
 
 import {
@@ -207,12 +207,10 @@ export class MuseClient {
     }
 
     async deviceInfo() {
-        const resultListener = this.controlResponses
+        const resultListener = lastValueFrom(this.controlResponses
             .pipe(
                 filter((r) => !!r.fw),
-                take(1),
-            )
-            .toPromise();
+                take(1)));
         await this.sendCommand('v1');
         return resultListener as Promise<MuseDeviceInfo>;
     }

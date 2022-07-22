@@ -1,4 +1,4 @@
-import { from } from 'rxjs';
+import { lastValueFrom, from } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 
 import {
@@ -37,9 +37,8 @@ describe('parseControl', () => {
             '"rc":0}{"r',
             'c":0}',
         ]);
-        const results = await parseControl(input)
-            .pipe(toArray())
-            .toPromise();
+        const results = await lastValueFrom(parseControl(input)
+            .pipe(toArray()));
         expect(results).toEqual([
             {
                 ap: 'headset',
